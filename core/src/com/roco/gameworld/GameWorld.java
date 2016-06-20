@@ -77,9 +77,8 @@ public class GameWorld {
 				}
 			}
 		} else {
-			if (isFilledUp(bigSquareCoor) {
+			if (isFilledUp(bigSquareCoor)) {
 				fillUpSquare(Owner.NEITHER);
-				
 				if (noOneWon()) {
 					// lose
 					Gdx.app.log("ALL I DO IS", "lose");
@@ -87,11 +86,13 @@ public class GameWorld {
 			}
 		}
 		int[] nextBigSquareCoor = new int[2];
+		nextBigSquareCoor[0] = square.getCoorX() % 3;
+		nextBigSquareCoor[1] = square.getCoorY() % 3;
 		
-		if (isFilledUp(nextBigSquareCoor) /* next 3x3 square is full */) {
+		if (isFilledUp(nextBigSquareCoor)) {
 			makeSelectable();// only Owner.EMPTY
 		} else {
-			makeSelectable(nextBigSquareCoor);
+			makeSelectable(nextBigSquareCoor);//thenext
 		}
 
 		switch (this.currentPlayer) {
@@ -110,7 +111,7 @@ public class GameWorld {
 		boolean filledUp = true;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j <3; j++) {
-				if (squares[(coor * 3) + i][(coor * 3) + j].getOwner() == Owner.EMPTY) {
+				if (squares[(coor[0] * 3) + i][(coor[1] * 3) + j].getOwner() == Owner.EMPTY) {
 					filledUp = false;
 					break;
 				}
@@ -124,10 +125,34 @@ public class GameWorld {
 
 	private void makeSelectable() {
 		//makes all Owner.EMPTY selectable
+		for (int i = 0; i < SQUARE_SIDE_COUNT; i++) {
+			for (int j = 0; j < SQUARE_SIDE_COUNT; j++) {
+				if (squares[i][j].getOwner() == Owner.EMPTY) {
+					squares[i][j].setSelectable(true);
+				} else {
+					squares[i][j].setSelectable(false);
+				}
+			}
+		}
 	}
 	
 	private void makeSelectable(int[] coor) {
 		//makes a certain square selectable
+		for (int i = 0; i < SQUARE_SIDE_COUNT; i++) {
+			for (int j = 0; j < SQUARE_SIDE_COUNT; j++) {	
+				squares[i][j].setSelectable(false);
+			}
+		}
+		
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (squares[(coor[0] * 3) + i][(coor[1] * 3) + j].getOwner() == Owner.EMPTY) {
+					squares[(coor[0] * 3) + i][(coor[1] * 3) + j].setSelectable(true);
+				} else {
+					squares[(coor[0] * 3) + i][(coor[1] * 3) + j].setSelectable(false);
+				}
+			}
+		}
 	}
 	
 	private boolean noOneWon() {
