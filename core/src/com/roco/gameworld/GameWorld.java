@@ -48,6 +48,7 @@ public class GameWorld {
 		int tempX = square.getCoorX();
 		int tempY = square.getCoorY();
 		Gdx.app.log("x and y", tempX + " " + tempY);
+		
 		if (tempX < 3) {
 			bigSquareCoor[0] = 0;
 		} else if (tempX < 6) {
@@ -65,34 +66,32 @@ public class GameWorld {
 		
 		if (gotThreeInARowSmall(square)) {
 			bigSquaresSettled[bigSquareCoor[0]][bigSquareCoor[1]] = true;
-			for (int i = 0; i < 3; i ++) {
-				for ( int j = 0; j < 3; j++) {
-					squares[(bigSquareCoor[0] * 3) + i][(bigSquareCoor[1] * 3) + j].setOwner(currentPlayer);
-					Gdx.app.log("bigSquareCoor", ((bigSquareCoor[0] * 3) + i) + " " + ((bigSquareCoor[1] * 3) + j));
-				}
-			}
+			fillUpSquare(currentPlayer);
 			if (gotThreeInARowBig(square)) {
 				// win
 				Gdx.app.log("ALL I DO IS", "WIN");
 			} else {
-				if (true /* all squares are Owner.NEITHER */) {
+				if (noOneWon()) {
 					// lose
+					Gdx.app.log("ALL I DO IS", "lose");
 				}
 			}
 		} else {
-			// check if 3x3 is full
-			if (true /* 3x3 full */) {
-				// change all squares to Owner.NEITHER Color
-				if (true /* all squares are Owner.NEITHER */) {
+			if (isFilledUp(bigSquareCoor) {
+				fillUpSquare(Owner.NEITHER);
+				
+				if (noOneWon()) {
 					// lose
+					Gdx.app.log("ALL I DO IS", "lose");
 				}
 			}
 		}
-
-		if (true /* next 3x3 square is full */) {
-			// make all Owner.EMPTY squares selectable
+		int[] nextBigSquareCoor = new int[2];
+		
+		if (isFilledUp(nextBigSquareCoor) /* next 3x3 square is full */) {
+			makeSelectable();// only Owner.EMPTY
 		} else {
-			// make only that 3x3 square selectable
+			makeSelectable(nextBigSquareCoor);
 		}
 
 		switch (this.currentPlayer) {
@@ -107,6 +106,58 @@ public class GameWorld {
 		}
 	}
 
+	private boolean isFilledUp(int[] coor) {
+		boolean filledUp = true;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j <3; j++) {
+				if (squares[(coor * 3) + i][(coor * 3) + j].getOwner() == Owner.EMPTY) {
+					filledUp = false;
+					break;
+				}
+			}
+			if (!filledUp) {
+				break;
+			}
+		}
+		return filledUp;
+	}
+
+	private void makeSelectable() {
+		//makes all Owner.EMPTY selectable
+	}
+	
+	private void makeSelectable(int[] coor) {
+		//makes a certain square selectable
+	}
+	
+	private boolean noOneWon() {
+		return wonBy(Owner.NEITHER);
+	}
+	
+	private boolean wonBy(Owner newOwner) {
+		boolean won = true;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j <3; j++) {
+				if (bigSquaresRep[i][j].getOwner() != newOwner) {
+					won = false;
+					break;
+				}
+			}
+			if (!won) {
+				break;
+			}
+		}
+		return won;
+	}
+	
+	private void fillUpSquare(Owner newOwner) {
+		for (int i = 0; i < 3; i ++) {
+			for ( int j = 0; j < 3; j++) {
+				squares[(bigSquareCoor[0] * 3) + i][(bigSquareCoor[1] * 3) + j].setOwner(newOwner);
+				Gdx.app.log("bigSquareCoor", ((bigSquareCoor[0] * 3) + i) + " " + ((bigSquareCoor[1] * 3) + j));
+			}
+		}
+	}
 	private boolean gotThreeInARowBig(Square square) {
 		Owner ownerToCheck = square.getOwner();
 		boolean firstFlag, secondFlag, thirdFlag;
