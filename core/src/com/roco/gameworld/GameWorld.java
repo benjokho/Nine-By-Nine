@@ -1,5 +1,6 @@
 package com.roco.gameworld;
 
+import com.roco.gameobjects.Owner;
 import com.roco.gameobjects.Square;
 
 public class GameWorld {
@@ -10,7 +11,7 @@ public class GameWorld {
 	private final int SQUARE_LENGTH = 30;
 	protected int SQUARE_SIDE_COUNT = 9;
 	private Square[][] squares;
-	
+	private Owner currentPlayer = Owner.PLAYER1;
 	public GameWorld() {
 		//generating squares
 		
@@ -31,6 +32,12 @@ public class GameWorld {
 	public void update(float delta) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void update(Square square) {
+		// TODO Auto-generated method stub
+		//change square color
+		//check if currentplayer got 3 in a row
 	}
 
 	public Square getSquare(int x, int y) {

@@ -1,6 +1,8 @@
 package nbnhelpers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Rectangle;
 import com.roco.gameobjects.Square;
 import com.roco.gameworld.GameWorld;
 
@@ -40,6 +42,18 @@ public class InputHandler implements InputProcessor{
 			for (int j = 0; j < 9; j++) {
 				//check if a square is clicked
 				Square tempSquare = world.getSquare(i, j);
+				Rectangle textureBounds = new Rectangle(tempSquare.getX(), tempSquare.getY(), tempSquare.getSquareSize(), tempSquare.getSquareSize());
+				  // texture x is the x position of the texture
+				  // texture y is the y position of the texture
+				  // texturewidth is the width of the texture (you can get it with texture.getWidth() or textureRegion.getRegionWidth() if you have a texture region
+				   // textureheight is the height of the texture (you can get it with texture.getHeight() or textureRegion.getRegionhHeight() if you have a texture region
+				if(textureBounds.contains(screenX,screenY))
+				{
+					Gdx.app.log("square", "touched");
+					if (tempSquare.isSelectable()) {
+						world.update(tempSquare);
+					}
+				}
 				/*
 				if () {
 					return true;

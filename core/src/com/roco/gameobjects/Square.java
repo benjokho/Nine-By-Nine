@@ -6,7 +6,8 @@ public class Square {
 	private boolean isSelectable;
 	private Owner owner;
 	private Vector2 position;
-
+	private final int SQUARE_SIZE = 30;
+	
 	public Square(int x, int y) {
 		isSelectable = true;
 		owner = Owner.EMPTY;
@@ -41,5 +42,9 @@ public class Square {
 	
 	public float getY() {
 		return position.y;
+	}
+	
+	public int getSquareSize() {
+		return SQUARE_SIZE;
 	}
 }

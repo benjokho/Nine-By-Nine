@@ -40,12 +40,12 @@ public class GameRenderer {
 				//draw square
 				Square tempSquare = world.getSquare(i, j);
 				if (tempSquare.isSelectable()) {
-					//XXX draw selected box shit
+					batch.draw(AssetLoader.blockSelector, tempSquare.getX() - 2, tempSquare.getY() - 2);
 				}
 				switch (tempSquare.getOwner()) {
 					//XXX draw corresponding square
 					case EMPTY:
-						batch.draw(AssetLoader.block7, tempSquare.getX(), tempSquare.getY());
+						batch.draw(AssetLoader.block8, tempSquare.getX(), tempSquare.getY());
 						break;
 					case NEITHER:
 						batch.draw(AssetLoader.block3, tempSquare.getX(), tempSquare.getY());
@@ -66,7 +66,6 @@ public class GameRenderer {
 						batch.draw(AssetLoader.block6, tempSquare.getX(), tempSquare.getY());
 						break;
 				}
-				
 			}
 			
 		}

@@ -10,7 +10,7 @@ import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.Texture2DState;
 public class AssetLoader {
 
     public static Texture texture;
-    public static TextureRegion block1, block2, block3, block4, block5, block6, block7, block8;
+    public static TextureRegion block1, block2, block3, block4, block5, block6, block7, block8, blockSelector;
 
     public static void load() {
 
@@ -53,6 +53,11 @@ public class AssetLoader {
         texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
         block8 = new TextureRegion(texture);
         block8.flip(false, true);
+        
+        texture = new Texture(Gdx.files.internal("data/blockSelector.png"));
+        texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        blockSelector = new TextureRegion(texture);
+        blockSelector.flip(false, true);
     }
 
     public static void dispose() {
