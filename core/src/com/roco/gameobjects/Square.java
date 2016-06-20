@@ -5,14 +5,15 @@ import com.badlogic.gdx.math.Vector2;
 public class Square {
 	private boolean isSelectable;
 	private Owner owner;
-	private Vector2 position;
+	private Vector2 position;//like actual position not coor
 	private final int SQUARE_SIZE = 30;
-	
-	public Square(int x, int y) {
+	private int[] coor = new int[2]; //smallSquareCoor
+	public Square(int x, int y, int i, int j) {
 		isSelectable = true;
 		owner = Owner.EMPTY;
 		position = new Vector2(x, y);
-		
+		coor[0] = i;
+		coor[1] = j;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -46,5 +47,13 @@ public class Square {
 	
 	public int getSquareSize() {
 		return SQUARE_SIZE;
+	}
+
+	public int getCoorX() {
+		return coor[0];
+	}
+	
+	public int getCoorY() {
+		return coor[1];
 	}
 }
