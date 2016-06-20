@@ -1,18 +1,24 @@
 package com.roco.gameobjects;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class Square {
 	private boolean isSelectable;
 	private Owner owner;
-	private int[] position = new int[2];
+	private Vector2 position;
 
 	public Square(int x, int y) {
 		isSelectable = true;
 		owner = Owner.EMPTY;
-		position[0] = x;
-		position[1] = y;
+		position = new Vector2(x, y);
+		
 		// TODO Auto-generated constructor stub
 	}
 
+	public void onClick() {
+		
+    }
+	
 	public boolean isSelectable() {
 		return isSelectable;
 	}
@@ -24,16 +30,16 @@ public class Square {
 	public Owner getOwner() {
 		return owner;
 	}
-
+	
 	public void setOwner(Owner owner) {
 		this.owner = owner;
 	}
 
-	public int getX() {
-		return position[0];
+	public float getX() {
+		return position.x;
 	}
 	
-	public int getY() {
-		return position[1];
+	public float getY() {
+		return position.y;
 	}
 }

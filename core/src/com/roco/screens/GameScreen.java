@@ -1,5 +1,7 @@
 package com.roco.screens;
 
+import nbnhelpers.InputHandler;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -7,12 +9,22 @@ import com.roco.gameworld.GameRenderer;
 import com.roco.gameworld.GameWorld;
 
 public class GameScreen implements Screen {
+	float screenWidth, screenHeight;   
+    float gameWidth, gameHeight;
 	private GameWorld world;
 	private GameRenderer renderer;
 	
 	public GameScreen() {
+		float screenWidth = Gdx.graphics.getWidth();
+        float screenHeight = Gdx.graphics.getHeight();      
+        float gameWidth = 136;
+        float gameHeight = screenHeight / (screenWidth / gameWidth);
+        
 		world = new GameWorld();
 		renderer = new GameRenderer(world);
+		
+		Gdx.input.setInputProcessor(new InputHandler(world));
+		
 	}
 
 	@Override
