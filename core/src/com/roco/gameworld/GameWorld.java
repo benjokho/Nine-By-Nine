@@ -48,10 +48,10 @@ public class GameWorld {
 	}
 
 	public void update(Square square) {
+		AssetLoader.click1.play();
 		square.setOwner(currentPlayer);
 		int tempX = square.getCoorX();
 		int tempY = square.getCoorY();
-		Gdx.app.log("x and y", tempX + " " + tempY);
 		
 		if (tempX < 3) {
 			bigSquareCoor[0] = 0;
@@ -71,17 +71,13 @@ public class GameWorld {
 		if (gotThreeInARowSmall(square)) {
 			setCurrentLead(square.getOwner());
 			double rand = Math.random();
-			int temp = (int) Math.floor(rand * 3);
+			int temp = (int) Math.floor(rand * 2);
 			
-			Gdx.app.log("temp", rand + " " + temp);
 			switch(temp) {
 				case 0:
 					AssetLoader.objectiveAchieved.play();
 					break;
 				case 1:
-					AssetLoader.congratulations.play();
-					break;
-				case 2:
 					AssetLoader.powerUp.play();
 					break;
 				default:
@@ -95,7 +91,6 @@ public class GameWorld {
 				AssetLoader.congratulations.stop();
 				AssetLoader.powerUp.stop();
 				AssetLoader.youWin.play();
-				Gdx.app.log("ALL I DO IS", "WIN");
 			} else {
 				if (noOneWon()) {
 					// lose
@@ -103,7 +98,6 @@ public class GameWorld {
 					AssetLoader.congratulations.stop();
 					AssetLoader.powerUp.stop();
 					AssetLoader.itsATie.play();
-					Gdx.app.log("ALL I DO IS", "lose");
 				}
 			}
 		} else {
@@ -115,7 +109,6 @@ public class GameWorld {
 					AssetLoader.congratulations.stop();
 					AssetLoader.powerUp.stop();
 					AssetLoader.itsATie.play();
-					Gdx.app.log("ALL I DO IS", "lose");
 				}
 			}
 		}
@@ -126,6 +119,8 @@ public class GameWorld {
 		if (isFilledUp(nextBigSquareCoor)) {
 			makeSelectable();// only Owner.EMPTY
 		} else {
+			makeSelectable();
+			//XXX
 			makeSelectable(nextBigSquareCoor);//thenext
 		}
 
@@ -190,30 +185,25 @@ public class GameWorld {
 	}
 	
 	private boolean noOneWon() {
-		return wonBy(Owner.NEITHER);
-	}
-	
-	private boolean wonBy(Owner newOwner) {
-		boolean won = true;
+		boolean over = true;
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j <3; j++) {
-				if (bigSquaresRep[i][j].getOwner() != newOwner) {
-					won = false;
+				if (bigSquaresRep[i][j].getOwner() == Owner.EMPTY) {
+					over = false;
 					break;
 				}
 			}
-			if (!won) {
+			if (!over) {
 				break;
 			}
 		}
-		return won;
+		return over;
 	}
 	
 	private void fillUpSquare(Owner newOwner) {
 		for (int i = 0; i < 3; i ++) {
 			for ( int j = 0; j < 3; j++) {
 				squares[(bigSquareCoor[0] * 3) + i][(bigSquareCoor[1] * 3) + j].setOwner(newOwner);
-				Gdx.app.log("bigSquareCoor", ((bigSquareCoor[0] * 3) + i) + " " + ((bigSquareCoor[1] * 3) + j));
 			}
 		}
 	}
@@ -226,7 +216,6 @@ public class GameWorld {
 		secondFlag = bigSquaresRep[1][bigSquareCoor[1]].getOwner() == bigSquaresRep[2][bigSquareCoor[1]].getOwner();
 		thirdFlag = bigSquaresSettled[0][bigSquareCoor[1]] && bigSquaresSettled[1][bigSquareCoor[1]] && bigSquaresSettled[2][bigSquareCoor[1]]; 
 		if (firstFlag && secondFlag && thirdFlag) {
-			Gdx.app.log("true", "row");
 			return true;
 		}
 		//check col
@@ -234,27 +223,29 @@ public class GameWorld {
 		secondFlag = bigSquaresRep[bigSquareCoor[0]][1].getOwner() == bigSquaresRep[bigSquareCoor[0]][2].getOwner();
 		thirdFlag = bigSquaresSettled[bigSquareCoor[0]][0] && bigSquaresSettled[bigSquareCoor[0]][1] && bigSquaresSettled[bigSquareCoor[0]][2]; 
 		if (firstFlag && secondFlag && thirdFlag) {
-			Gdx.app.log("true", "row");
 			return true;
 		}
-		//check if on diag, then check diag
-		if (bigSquareCoor[0] == bigSquareCoor[1]) {
-			firstFlag = bigSquaresRep[0][0].getOwner() == bigSquaresRep[1][1].getOwner(); 
-			secondFlag = bigSquaresRep[1][1].getOwner() == bigSquaresRep[2][2].getOwner();
-			thirdFlag = bigSquaresSettled[0][0] && bigSquaresSettled[1][1] && bigSquaresSettled[2][2]; 
-			if (firstFlag && secondFlag && thirdFlag) {
-				Gdx.app.log("true", "dia");
-				return true;
-			}	
+		
+		//updiag
+		firstFlag = bigSquaresRep[0][0].getOwner() == bigSquaresRep[1][1].getOwner(); 
+		secondFlag = bigSquaresRep[1][1].getOwner() == bigSquaresRep[2][2].getOwner();
+		thirdFlag = bigSquaresSettled[0][0] && bigSquaresSettled[1][1] && bigSquaresSettled[2][2]; 
+		Gdx.app.log("flags for down diag", firstFlag + " " + secondFlag + " " + thirdFlag);
+		if (firstFlag && secondFlag && thirdFlag) {
+			return true;
+		}	
 			
-			firstFlag = bigSquaresRep[2][0].getOwner() == bigSquaresRep[1][1].getOwner(); 
-			secondFlag = bigSquaresRep[1][1].getOwner() == bigSquaresRep[0][2].getOwner();
-			thirdFlag = bigSquaresSettled[2][0] && bigSquaresSettled[1][1] && bigSquaresSettled[0][2]; 
-			if (firstFlag && secondFlag && thirdFlag) {
-				Gdx.app.log("true", "row");
-				return true;
-			}	
-		}
+		//downdiag
+		firstFlag = bigSquaresRep[2][0].getOwner() == bigSquaresRep[1][1].getOwner(); 
+		secondFlag = bigSquaresRep[1][1].getOwner() == bigSquaresRep[0][2].getOwner();
+		thirdFlag = bigSquaresSettled[2][0] && bigSquaresSettled[1][1] && bigSquaresSettled[0][2]; 
+		Gdx.app.log("flags for up diag", firstFlag + " " + secondFlag + " " + thirdFlag);
+		Gdx.app.log("2,0 and 1,1", bigSquaresRep[2][0].getOwner() + " " + bigSquaresRep[1][1].getOwner());
+		Gdx.app.log("1,1 and 0,2", bigSquaresRep[1][1].getOwner() + " " + bigSquaresRep[0][2].getOwner());
+		if (firstFlag && secondFlag && thirdFlag) {
+			return true;
+		}	
+		
 		return false;
 	}
 
@@ -266,14 +257,12 @@ public class GameWorld {
 		firstFlag = squares[tempX][(bigSquareCoor[1] * 3)].getOwner() == squares[tempX][(bigSquareCoor[1] * 3) + 1].getOwner(); 
 		secondFlag = squares[tempX][(bigSquareCoor[1] * 3)].getOwner() == squares[tempX][(bigSquareCoor[1] * 3) + 2].getOwner();
 		if (firstFlag && secondFlag) {
-			Gdx.app.log("true", "row");
 			return true;
 		}
 		//check col
 		firstFlag = squares[(bigSquareCoor[0] * 3)][tempY].getOwner() == squares[(bigSquareCoor[0] * 3) + 1][tempY].getOwner(); 
 		secondFlag = squares[(bigSquareCoor[0] * 3)][tempY].getOwner() == squares[(bigSquareCoor[0] * 3) + 2][tempY].getOwner();
 		if (firstFlag && secondFlag) {
-			Gdx.app.log("true", "col");
 			return true;
 		}
 		//check if on diag, then check diag
@@ -282,7 +271,6 @@ public class GameWorld {
 		secondFlag = squares[(bigSquareCoor[0] * 3)][(bigSquareCoor[1] * 3)].getOwner() == squares[(bigSquareCoor[0] * 3) + 1][(bigSquareCoor[1] * 3) + 1].getOwner();
 		thirdFlag = squares[(bigSquareCoor[0] * 3)][(bigSquareCoor[1] * 3)].getOwner() == square.getOwner();
 		if (firstFlag && secondFlag && thirdFlag) {
-			Gdx.app.log("true", "dia");
 			return true;
 		}	
 			
@@ -290,7 +278,6 @@ public class GameWorld {
 		secondFlag = squares[(bigSquareCoor[0] * 3) + 1][(bigSquareCoor[1] * 3) + 1].getOwner() == squares[(bigSquareCoor[0] * 3) + 2][(bigSquareCoor[1] * 3)].getOwner();
 		thirdFlag = squares[(bigSquareCoor[0] * 3) + 1][(bigSquareCoor[1] * 3) + 1].getOwner() == square.getOwner();
 		if (firstFlag && secondFlag && thirdFlag) {
-			Gdx.app.log("true", "row");
 			return true;
 		}	
 		

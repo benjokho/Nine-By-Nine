@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.sun.j3d.utils.scenegraph.io.state.javax.media.j3d.Texture2DState;
 
@@ -16,8 +17,10 @@ public class AssetLoader {
     public static TextureRegion bigBlock1, bigBlock5;
 
     public static Sound youWin, youLose, itsATie, objectiveAchieved, congratulations, powerUp;
+    public static Sound click1;
     public static Music partySector;
     
+    public static BitmapFont font1;
     public static void load() {
 
         texture = new Texture(Gdx.files.internal("data/block1.png"));
@@ -81,8 +84,12 @@ public class AssetLoader {
         objectiveAchieved = Gdx.audio.newSound(Gdx.files.internal("data/objective_achieved.ogg"));
         congratulations = Gdx.audio.newSound(Gdx.files.internal("data/congratulations.ogg"));
         powerUp = Gdx.audio.newSound(Gdx.files.internal("data/power_up.ogg"));
+        click1 = Gdx.audio.newSound(Gdx.files.internal("data/click1.wav"));
         
         partySector = Gdx.audio.newMusic(Gdx.files.internal("data/party_sector.mp3"));
+        
+        font1 = new BitmapFont(Gdx.files.internal("data/font1.fnt"));
+        font1.setScale(0.25f, 0.25f);
     }
 
     public static void dispose() {

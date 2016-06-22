@@ -49,7 +49,6 @@ public class InputHandler implements InputProcessor{
 				   // textureheight is the height of the texture (you can get it with texture.getHeight() or textureRegion.getRegionhHeight() if you have a texture region
 				if(textureBounds.contains(screenX,screenY))
 				{
-					Gdx.app.log("square", "touched");
 					if (tempSquare.isSelectable()) {
 						world.update(tempSquare);
 					}

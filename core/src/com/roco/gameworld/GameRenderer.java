@@ -35,16 +35,7 @@ public class GameRenderer {
         
         batch.begin();
         batch.disableBlending();
-        /*
-        if (world.getCurrentLead() == Owner.PLAYER1) {
-        	Gdx.gl.glClearColor(0, 1, 0, 1);
-        	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        } else if (world.getCurrentLead() == Owner.PLAYER2) {
-        	Gdx.gl.glClearColor(0, 0, 1, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        }
-        */
-        
+         
 		for (int i = 0; i < world.SQUARE_SIDE_COUNT; i++) {
 			for (int j = 0; j < world.SQUARE_SIDE_COUNT; j++) {
 				//draw square
