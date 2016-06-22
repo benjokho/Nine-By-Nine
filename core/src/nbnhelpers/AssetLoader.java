@@ -87,9 +87,6 @@ public class AssetLoader {
         click1 = Gdx.audio.newSound(Gdx.files.internal("data/click1.wav"));
         
         partySector = Gdx.audio.newMusic(Gdx.files.internal("data/party_sector.mp3"));
-        
-        font1 = new BitmapFont(Gdx.files.internal("data/font1.fnt"));
-        font1.setScale(0.25f, 0.25f);
     }
 
     public static void dispose() {
