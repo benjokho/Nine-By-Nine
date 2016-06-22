@@ -35,6 +35,16 @@ public class GameRenderer {
         
         batch.begin();
         batch.disableBlending();
+        /*
+        if (world.getCurrentLead() == Owner.PLAYER1) {
+        	Gdx.gl.glClearColor(0, 1, 0, 1);
+        	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        } else if (world.getCurrentLead() == Owner.PLAYER2) {
+        	Gdx.gl.glClearColor(0, 0, 1, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        }
+        */
+        
 		for (int i = 0; i < world.SQUARE_SIDE_COUNT; i++) {
 			for (int j = 0; j < world.SQUARE_SIDE_COUNT; j++) {
 				//draw square
@@ -69,6 +79,25 @@ public class GameRenderer {
 			}
 			
 		}
+		
+		//draw settled big squares
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (world.getBigSquaresSettled()[i][j]) {
+					switch (world.getBigSquaresRep()[i][j].getOwner()) {
+					case PLAYER1:
+						batch.draw(AssetLoader.bigBlock1, world.getBigSquaresRep()[i][j].getX(), world.getBigSquaresRep()[i][j].getY());
+						break;
+					case PLAYER2:
+						batch.draw(AssetLoader.bigBlock5, world.getBigSquaresRep()[i][j].getX(), world.getBigSquaresRep()[i][j].getY());
+						break;
+					default:
+						break;
+					}
+				}
+			}
+		}
+		
 		batch.end();
 	}
 

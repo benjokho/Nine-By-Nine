@@ -38,10 +38,12 @@ public class Square {
 	}
 
 	public float getX() {
+		//like actual x, where it is on screenx
 		return position.x;
 	}
 	
 	public float getY() {
+		//like actual y, where it is on screeny
 		return position.y;
 	}
 	

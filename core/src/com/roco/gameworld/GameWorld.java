@@ -1,5 +1,7 @@
 package com.roco.gameworld;
 
+import nbnhelpers.AssetLoader;
+
 import com.badlogic.gdx.Gdx;
 import com.roco.gameobjects.Owner;
 import com.roco.gameobjects.Square;
@@ -16,10 +18,9 @@ public class GameWorld {
 	private boolean[][] bigSquaresSettled = new boolean[3][3];
 	private Owner currentPlayer = Owner.PLAYER1;
 	private int[] bigSquareCoor = new int[2];
-	
+	private Owner currentLead;
 	public GameWorld() {
 		// generating squares
-
 		squares = new Square[SQUARE_SIDE_COUNT][SQUARE_SIDE_COUNT];
 		for (int i = 0; i < SQUARE_SIDE_COUNT; i++) {
 			for (int j = 0; j < SQUARE_SIDE_COUNT; j++) {
@@ -36,6 +37,9 @@ public class GameWorld {
 				bigSquaresSettled[tempBigSeparatorX][tempBigSeparatorY] = false;
 			}
 		}
+		AssetLoader.partySector.setVolume(0.5f);
+		AssetLoader.partySector.setLooping(true);
+		AssetLoader.partySector.play();
 	}
 
 	public void update(float delta) {
@@ -65,14 +69,40 @@ public class GameWorld {
 		}
 		
 		if (gotThreeInARowSmall(square)) {
+			setCurrentLead(square.getOwner());
+			double rand = Math.random();
+			int temp = (int) Math.floor(rand * 3);
+			
+			Gdx.app.log("temp", rand + " " + temp);
+			switch(temp) {
+				case 0:
+					AssetLoader.objectiveAchieved.play();
+					break;
+				case 1:
+					AssetLoader.congratulations.play();
+					break;
+				case 2:
+					AssetLoader.powerUp.play();
+					break;
+				default:
+					break;
+			}
 			bigSquaresSettled[bigSquareCoor[0]][bigSquareCoor[1]] = true;
 			fillUpSquare(currentPlayer);
 			if (gotThreeInARowBig(square)) {
 				// win
+				AssetLoader.objectiveAchieved.stop();
+				AssetLoader.congratulations.stop();
+				AssetLoader.powerUp.stop();
+				AssetLoader.youWin.play();
 				Gdx.app.log("ALL I DO IS", "WIN");
 			} else {
 				if (noOneWon()) {
 					// lose
+					AssetLoader.objectiveAchieved.stop();
+					AssetLoader.congratulations.stop();
+					AssetLoader.powerUp.stop();
+					AssetLoader.itsATie.play();
 					Gdx.app.log("ALL I DO IS", "lose");
 				}
 			}
@@ -81,6 +111,10 @@ public class GameWorld {
 				fillUpSquare(Owner.NEITHER);
 				if (noOneWon()) {
 					// lose
+					AssetLoader.objectiveAchieved.stop();
+					AssetLoader.congratulations.stop();
+					AssetLoader.powerUp.stop();
+					AssetLoader.itsATie.play();
 					Gdx.app.log("ALL I DO IS", "lose");
 				}
 			}
@@ -265,5 +299,29 @@ public class GameWorld {
 
 	public Square getSquare(int x, int y) {
 		return squares[x][y];
+	}
+
+	public Owner getCurrentLead() {
+		return currentLead;
+	}
+
+	public void setCurrentLead(Owner currentLead) {
+		this.currentLead = currentLead;
+	}
+
+	public Square[][] getBigSquaresRep() {
+		return bigSquaresRep;
+	}
+
+	public void setBigSquaresRep(Square[][] bigSquaresRep) {
+		this.bigSquaresRep = bigSquaresRep;
+	}
+
+	public boolean[][] getBigSquaresSettled() {
+		return bigSquaresSettled;
+	}
+
+	public void setBigSquaresSettled(boolean[][] bigSquaresSettled) {
+		this.bigSquaresSettled = bigSquaresSettled;
 	}
 }

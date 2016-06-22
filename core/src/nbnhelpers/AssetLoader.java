@@ -1,6 +1,8 @@
 package nbnhelpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -11,7 +13,11 @@ public class AssetLoader {
 
     public static Texture texture;
     public static TextureRegion block1, block2, block3, block4, block5, block6, block7, block8, blockSelector;
+    public static TextureRegion bigBlock1, bigBlock5;
 
+    public static Sound youWin, youLose, itsATie, objectiveAchieved, congratulations, powerUp;
+    public static Music partySector;
+    
     public static void load() {
 
         texture = new Texture(Gdx.files.internal("data/block1.png"));
@@ -58,6 +64,25 @@ public class AssetLoader {
         texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
         blockSelector = new TextureRegion(texture);
         blockSelector.flip(false, true);
+        
+        texture = new Texture(Gdx.files.internal("data/bigblock1.png"));
+        texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        bigBlock1 = new TextureRegion(texture);
+        bigBlock1.flip(false, true);
+        
+        texture = new Texture(Gdx.files.internal("data/bigblock5.png"));
+        texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        bigBlock5 = new TextureRegion(texture);
+        bigBlock5.flip(false, true);
+        
+        youWin = Gdx.audio.newSound(Gdx.files.internal("data/you_win.ogg"));
+        youLose = Gdx.audio.newSound(Gdx.files.internal("data/you_lose.ogg"));
+        itsATie = Gdx.audio.newSound(Gdx.files.internal("data/its_a_tie.ogg"));
+        objectiveAchieved = Gdx.audio.newSound(Gdx.files.internal("data/objective_achieved.ogg"));
+        congratulations = Gdx.audio.newSound(Gdx.files.internal("data/congratulations.ogg"));
+        powerUp = Gdx.audio.newSound(Gdx.files.internal("data/power_up.ogg"));
+        
+        partySector = Gdx.audio.newMusic(Gdx.files.internal("data/party_sector.mp3"));
     }
 
     public static void dispose() {
