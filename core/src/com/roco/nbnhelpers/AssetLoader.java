@@ -1,4 +1,4 @@
-package nbnhelpers;
+package com.roco.nbnhelpers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -87,11 +87,24 @@ public class AssetLoader {
         click1 = Gdx.audio.newSound(Gdx.files.internal("data/click1.wav"));
         
         partySector = Gdx.audio.newMusic(Gdx.files.internal("data/party_sector.mp3"));
+        
+        font1 = new BitmapFont(Gdx.files.internal("data/trench.fnt"));
+        font1.setScale(1f, -1f);
+      
     }
 
     public static void dispose() {
         // We must dispose of the texture when we are finished.
         texture.dispose();
+        youWin.dispose();
+        youLose.dispose();
+        itsATie.dispose();
+        objectiveAchieved.dispose();
+        congratulations.dispose();
+        powerUp.dispose();
+        click1.dispose();
+        partySector.dispose();
+        font1.dispose();
     }
 
 }

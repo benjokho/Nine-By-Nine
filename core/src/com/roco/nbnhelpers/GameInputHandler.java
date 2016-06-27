@@ -1,4 +1,4 @@
-package nbnhelpers;
+package com.roco.nbnhelpers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -6,10 +6,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.roco.gameobjects.Square;
 import com.roco.gameworld.GameWorld;
 
-public class InputHandler implements InputProcessor{
+public class GameInputHandler implements InputProcessor{
 	private GameWorld world;
 
-	public InputHandler(GameWorld world) {
+	public GameInputHandler(GameWorld world) {
 		super();
 		this.world = world;
 		// TODO Auto-generated constructor stub

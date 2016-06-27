@@ -1,10 +1,14 @@
 package com.roco.gameobjects;
 
 public enum Owner {
-	PLAYER1,
-	PLAYER2,
-	NEITHER,
-	EMPTY,
-	PLAYER1CAPTURED,
-	PLAYER2CAPTURED
+	PLAYER1("1"),
+	PLAYER2("2"),
+	NEITHER("neither"),
+	EMPTY("none");
+	
+	private final String name;
+	private Owner (final String name) { this.name = name;}
+	public String toString() {
+		return name;
+	}
 };

@@ -1,25 +1,29 @@
 package com.roco.gameworld;
 
-import nbnhelpers.AssetLoader;
-
 import com.badlogic.gdx.Gdx;
+import com.roco.gameobjects.GameState;
 import com.roco.gameobjects.Owner;
 import com.roco.gameobjects.Square;
+import com.roco.nbnhelpers.AssetLoader;
 
 public class GameWorld {
-	private final int BORDERX = 30;
-	private final int BORDERY = 170;
-	private final int SEPARATOR_SMALL = 10;
-	private final int SEPARATOR_BIG = 15;
-	private final int SQUARE_LENGTH = 30;
-	protected int SQUARE_SIDE_COUNT = 9;
+	public final int BORDERX = 30;
+	public final int BORDERY = 170;
+	public final int SEPARATOR_SMALL = 10;
+	public final int SEPARATOR_BIG = 15;
+	public final int SQUARE_LENGTH = 30;
+	public int SQUARE_SIDE_COUNT = 9;
+	
 	private Square[][] squares;
 	private Square[][] bigSquaresRep = new Square[3][3];
 	private boolean[][] bigSquaresSettled = new boolean[3][3];
 	private Owner currentPlayer = Owner.PLAYER1;
 	private int[] bigSquareCoor = new int[2];
 	private Owner currentLead;
+	private GameState currentState;
+	
 	public GameWorld() {
+		currentState = GameState.READY;
 		// generating squares
 		squares = new Square[SQUARE_SIDE_COUNT][SQUARE_SIDE_COUNT];
 		for (int i = 0; i < SQUARE_SIDE_COUNT; i++) {
@@ -37,16 +41,15 @@ public class GameWorld {
 				bigSquaresSettled[tempBigSeparatorX][tempBigSeparatorY] = false;
 			}
 		}
-		AssetLoader.partySector.setVolume(0.5f);
-		AssetLoader.partySector.setLooping(true);
-		AssetLoader.partySector.play();
+		
+		currentState = GameState.RUNNING;
 	}
 
 	public void update(float delta) {
 		// TODO Auto-generated method stub
 
 	}
-
+	
 	public void update(Square square) {
 		AssetLoader.click1.play();
 		square.setOwner(currentPlayer);
@@ -91,6 +94,7 @@ public class GameWorld {
 				AssetLoader.congratulations.stop();
 				AssetLoader.powerUp.stop();
 				AssetLoader.youWin.play();
+				currentState = GameState.WIN;
 			} else {
 				if (noOneWon()) {
 					// lose
@@ -98,6 +102,7 @@ public class GameWorld {
 					AssetLoader.congratulations.stop();
 					AssetLoader.powerUp.stop();
 					AssetLoader.itsATie.play();
+					currentState = GameState.TIE;
 				}
 			}
 		} else {
@@ -109,19 +114,22 @@ public class GameWorld {
 					AssetLoader.congratulations.stop();
 					AssetLoader.powerUp.stop();
 					AssetLoader.itsATie.play();
+					currentState = GameState.TIE;
 				}
 			}
 		}
+		
 		int[] nextBigSquareCoor = new int[2];
 		nextBigSquareCoor[0] = square.getCoorX() % 3;
 		nextBigSquareCoor[1] = square.getCoorY() % 3;
 		
 		if (isFilledUp(nextBigSquareCoor)) {
 			makeSelectable();// only Owner.EMPTY
+			//big box around eveything
 		} else {
 			makeSelectable();
-			//XXX
-			makeSelectable(nextBigSquareCoor);//thenext
+			//makeSelectable(nextBigSquareCoor);//thenext
+			//big box around next big square
 		}
 
 		switch (this.currentPlayer) {
@@ -310,5 +318,13 @@ public class GameWorld {
 
 	public void setBigSquaresSettled(boolean[][] bigSquaresSettled) {
 		this.bigSquaresSettled = bigSquaresSettled;
+	}
+	
+	public Owner getCurrentPlayer() {
+		return this.currentPlayer;
+	}
+	
+	public GameState getCurrentState() {
+		return currentState;
 	}
 }
