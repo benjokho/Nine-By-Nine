@@ -26,7 +26,6 @@ public class MenuScreen implements Screen {
 	private static final float BUTTON_WIDTH = 300f;
 	private static final float BUTTON_HEIGHT = 60f;
 	private static final float BUTTON_SPACING = 50f;
-	
 	private NineByNine nbn;
 	
 	private Skin skin;
